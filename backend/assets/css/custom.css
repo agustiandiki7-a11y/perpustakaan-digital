@@ -1,0 +1,91 @@
+/* =========================================
+   PERPUSTAKAAN DIGITAL
+   FIX GLOBAL BACKEND LAYOUT
+   ========================================= */
+
+html,body{
+    min-height:100%;
+}
+
+body{
+    margin:0;
+    padding:0;
+}
+
+/* WRAPPER */
+.wrapper{
+    min-height:100vh;
+}
+
+/* MAIN PANEL */
+.main-panel{
+    min-height:100vh;
+}
+
+/* CONTAINER BACKEND */
+.main-panel>.container{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+    padding-left:30px!important;
+    padding-right:30px!important;
+}
+
+/* PAGE INNER */
+.main-panel>.container>.page-inner{
+    width:100%!important;
+    max-width:none!important;
+    margin-left:0!important;
+    margin-right:0!important;
+}
+
+/* CARD */
+.main-panel .card{
+    width:100%;
+}
+
+/* TABLE */
+.main-panel .table-responsive{
+    width:100%;
+    overflow-x:auto;
+}
+
+.main-panel table{
+    width:100%;
+}
+
+/* ROW / COLUMN */
+.main-panel .row{
+    margin-left:-10px;
+    margin-right:-10px;
+}
+
+.main-panel .row>[class*="col-"]{
+    padding-left:10px;
+    padding-right:10px;
+}
+
+/* PAGE HEADER */
+.main-panel .page-header{
+    width:100%;
+}
+
+/* RESPONSIVE */
+@media(max-width:991px){
+
+    .main-panel>.container{
+        padding-left:20px!important;
+        padding-right:20px!important;
+    }
+
+}
+
+@media(max-width:576px){
+
+    .main-panel>.container{
+        padding-left:15px!important;
+        padding-right:15px!important;
+    }
+
+}
