@@ -1,31 +1,25 @@
 <?php
-require_once __DIR__ . '/../../app/config/Database.php';
-require_once __DIR__ . '/../../app/helpers/auth.php';
+require_once __DIR__ . '/database/connection.php';
 
-mulaiSession();
-cekRole(['admin']);
 
-// ======================================================
-// KONEKSI DATABASE
-// ======================================================
-$database = new Database();
-$db = $database->connect();
+session_start();
 
-// ======================================================
-// STATISTIK DASHBOARD
-// ======================================================
 try {
     // Total buku aktif
-    $totalBuku = $db->query("SELECT COUNT(*) FROM books WHERE status = 'aktif'")->fetchColumn();
+    $totalBuku = $conn->query("SELECT COUNT(*) FROM books WHERE status = 'aktif'");
+    $totalBuku = mysqli_fetch_assoc($totalBuku);
 
     // Total pengguna aktif
-    $totalPengguna = $db->query("SELECT COUNT(*) FROM users WHERE status = 'aktif'")->fetchColumn();
+    $totalPengguna = $conn->query("SELECT COUNT(*) FROM users WHERE status = 'aktif'");
+    $totalPengguna = mysqli_fetch_assoc($totalPengguna);
 
     // Total seluruh peminjaman
-    $totalPeminjaman = $db->query("SELECT COUNT(*) FROM loans")->fetchColumn();
+    $totalPeminjaman = $conn->query("SELECT COUNT(*) FROM loans");
+    $totalPeminjaman =mysqli_fetch_assoc($totalPeminjaman)
 
     // Total peminjaman menunggu
-    $totalMenunggu = $db->query("SELECT COUNT(*) FROM loans WHERE status = 'menunggu'")->fetchColumn();
+    $totalMenunggu = $conn->query("SELECT COUNT(*) FROM loans WHERE status = 'menunggu'");
+    $totalMenunggu =mysqli_fetch_assoc($totalMenunggu);
 } catch (PDOException $e) {
     $totalBuku = 0;
     $totalPengguna = 0;
@@ -38,67 +32,7 @@ $user = userLogin();
 ?>
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Dashboard Admin - Perpustakaan Digital</title>
-    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
-    
-    <link rel="icon" href="../assets/img/kaiadmin/favicon.ico" type="image/x-icon">
-
-    <!-- Fonts & Icons -->
-    <script src="../assets/js/plugin/webfont/webfont.min.js"></script>
-    <script>
-        WebFont.load({
-            google: { families: ["Public Sans:300,400,500,600,700"] },
-            custom: {
-                families: [
-                    "Font Awesome 5 Solid",
-                    "Font Awesome 5 Regular",
-                    "Font Awesome 5 Brands",
-                    "simple-line-icons"
-                ],
-                urls: ["../assets/css/fonts.min.css"]
-            },
-            active: function() {
-                sessionStorage.fonts = true;
-            }
-        });
-    </script>
-
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/plugins.min.css">
-    <link rel="stylesheet" href="../assets/css/kaiadmin.min.css">
-    <link rel="stylesheet" href="../assets/css/demo.css">
-
-    <style>
-        .hero-card {
-            background: linear-gradient(135deg, #1e1e2f 0%, #2b2b40 100%);
-            border-radius: 1.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-card::after {
-            content: '';
-            position: absolute;
-            right: -30px;
-            bottom: -30px;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 50%;
-        }
-        .stat-card {
-            border-radius: 1rem;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: none;
-        }
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 1rem 3rem rgba(0,0,0,.08)!important;
-        }
-    </style>
-</head>
+    <?php include 'partials/head.php' ?>
 <body>
 
     <div class="wrapper">
@@ -287,51 +221,6 @@ $user = userLogin();
 
         </div>
     </div>
-
-    <!-- CORE JS -->
-    <script src="../assets/js/core/jquery-3.7.1.min.js"></script>
-    <script src="../assets/js/core/popper.min.js"></script>
-    <script src="../assets/js/core/bootstrap.min.js"></script>
-
-    <!-- PLUGINS -->
-    <script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-    <script src="../assets/js/plugin/chart.js/chart.min.js"></script>
-    <script src="../assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
-    <script src="../assets/js/plugin/datatables/datatables.min.js"></script>
-    <script src="../assets/js/plugin/sweetalert/sweetalert.min.js"></script>
-    <script src="../assets/js/kaiadmin.min.js"></script>
-
-    <!-- INISIALISASI GRAFIK -->
-    <script>
-        var ctx = document.getElementById('statisticsChart').getContext('2d');
-        var statisticsChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"],
-                datasets: [{
-                    label: "Peminjaman Buku",
-                    borderColor: '#177dff',
-                    pointBorderColor: '#FFF',
-                    pointBackgroundColor: '#177dff',
-                    pointBorderWidth: 2,
-                    pointHoverRadius: 4,
-                    pointHoverBorderWidth: 1,
-                    pointRadius: 3,
-                    backgroundColor: 'rgba(23, 125, 255, 0.1)',
-                    fill: true,
-                    borderWidth: 2,
-                    data: [12, 19, 15, 25, 22, 30, 18]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                legend: { position: 'bottom' },
-                scales: {
-                    yAxes: [{ ticks: { beginAtZero: true } }]
-                }
-            }
-        });
-    </script>
+    <?php include 'partials/script.php' ?>
 </body>
 </html>
